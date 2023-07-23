@@ -207,9 +207,13 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: 78d36efdfba56a6429f740e354ba74f7, type: 2}
     - target: {fileID: 5866666021909216657, guid: 8d6bb0967a9efd34e87e00fd231ec1c2, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 8d6bb0967a9efd34e87e00fd231ec1c2, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 6294df9f156972f47bd07cb721aeabe3, type: 2}
+      objectReference: {fileID: 9100000, guid: 8cabd14a7cb6812478dba281d651ccc7, type: 2}
     - target: {fileID: 8747505679739568733, guid: 8d6bb0967a9efd34e87e00fd231ec1c2, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -424,6 +428,77 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &936014933 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 8d6bb0967a9efd34e87e00fd231ec1c2, type: 3}
+  m_PrefabInstance: {fileID: 186770710}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &936014934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 936014933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 453102b5f5553944e9865a227d83cc5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveAxis: {x: 0, y: 0}
+  movementSpeed: 5.3
+  rotationSpeed: 0.2
+  fallSpeed: 0.2
+  acceleration: 1
+  blockRotationPlayer: 0
+--- !u!143 &936014935
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 936014933}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0.98, z: 0}
+--- !u!114 &936014938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 936014933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: e675eff2c8fb697488e4f36aa7d72b01, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &1778179872
 GameObject:
   m_ObjectHideFlags: 0
