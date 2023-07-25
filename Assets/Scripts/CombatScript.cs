@@ -87,7 +87,7 @@ public class CombatScript : MonoBehaviour
     public void Attack(EnemyScript target, float distance)
     {
         //Types of attack animation
-        attacks = new string[] { "AirKick", "AirKick2", "AirKick3", "AirKick4" };
+        attacks = new string[] { "AirKick", "AirKick2", "AirKick3", "AirKick4", "AirKick5" };
 
         //Attack nothing in case target is null
         if (target == null)
