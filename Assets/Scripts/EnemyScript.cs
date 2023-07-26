@@ -261,7 +261,7 @@ public class EnemyScript : MonoBehaviour
     private void Attack()
     {
         transform.DOMove(transform.position + (transform.forward / 1), .5f);
-        animator.SetTrigger("AirPunch");
+        animator.SetTrigger("Punch");
     }
 
     public void HitEvent()

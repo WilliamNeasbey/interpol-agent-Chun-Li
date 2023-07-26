@@ -11,6 +11,7 @@ public class CombatScript : MonoBehaviour
     private MovementInput movementInput;
     private Animator animator;
     private CinemachineImpulseSource impulseSource;
+    public AudioSource hitSound;
 
     [Header("Target")]
     private EnemyScript lockedTarget;
@@ -215,8 +216,9 @@ public class CombatScript : MonoBehaviour
 
         OnHit.Invoke(lockedTarget);
 
-        //Polish
+        //Particle
         kickParticle.PlayParticleAtPosition(kickPosition.position);
+        hitSound.Play();
     }
 
     public void DamageEvent()

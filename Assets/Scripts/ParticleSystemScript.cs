@@ -21,7 +21,7 @@ public class ParticleSystemScript : MonoBehaviour
 
         transform.position = pos;
         particle.Play();
-        particleMaterial.DOFade(1, 0);
-        particleMaterial.DOFade(0, pmain.startLifetime.constant).SetEase(Ease.InExpo);
+       // particleMaterial.DOFade(1, 0);
+       // particleMaterial.DOFade(0, pmain.startLifetime.constant).SetEase(Ease.InExpo);
     }
 }
