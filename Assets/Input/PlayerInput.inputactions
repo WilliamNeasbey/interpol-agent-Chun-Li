@@ -123,7 +123,7 @@
                 {
                     "name": "",
                     "id": "94207890-e27a-443d-9b2b-b4cfd4db3060",
-                    "path": "<Mouse>/rightButton",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardMouse",

@@ -25,6 +25,19 @@ public class EnemyManager : MonoBehaviour
         }
 
         StartAI();
+
+        // Start the coroutine to update alive enemy count every second
+        StartCoroutine(UpdateAliveEnemyCount());
+
+    }
+
+    IEnumerator UpdateAliveEnemyCount()
+    {
+        while (true)
+        {
+            aliveEnemyCount = AliveEnemyCount(); // Update the alive enemy count
+            yield return new WaitForSeconds(1f); // Wait for one second before updating again
+        }
     }
 
     public void StartAI()
