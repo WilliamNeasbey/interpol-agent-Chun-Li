@@ -54,6 +54,9 @@ public class EnemyScript : MonoBehaviour
 
         MovementCoroutine = StartCoroutine(EnemyMovement());
 
+        counterParticle.Clear();
+        counterParticle.Stop();
+
     }
 
     IEnumerator EnemyMovement()
