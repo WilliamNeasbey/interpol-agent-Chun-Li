@@ -14,6 +14,7 @@ public class CombatScript : MonoBehaviour
     private Animator animator;
     private CinemachineImpulseSource impulseSource;
     public AudioSource hitSound;
+    public AudioSource painSound;
 
     [Header("Target")]
     private EnemyScript lockedTarget;
@@ -49,11 +50,23 @@ public class CombatScript : MonoBehaviour
     [Header("Health Settings")]
     public int maxHealth = 100;
     private int currentHealth;
+    private bool isDead = false;
 
     [Header("UI Elements")]
     public TextMeshProUGUI healthText;
     public GameObject deathAnimation;
     public GameObject gameOverUI;
+
+    [Header("Movement Disable")]
+    public GameObject DisableMovement;
+
+    [SerializeField] private float spinningBirdKickRadius = 50f;
+
+    //hit counter
+    public int hitCount = 0;
+    [SerializeField] private TextMeshProUGUI hitCountText;
+
+
 
     void Start()
     {
@@ -65,11 +78,17 @@ public class CombatScript : MonoBehaviour
         currentHealth = maxHealth;
         UpdateHealthUI();
     }
+    void Update()
+    {
+       
+
+        SpinningBirdKickInput(); // Call the new function to handle Spinning Bird Kick input
+    }
 
     // This function gets called whenever the player receives damage
     public void TakeDamage(int damage)
     {
-        if (currentHealth <= 0)
+        if (isDead)
             return;
 
         currentHealth -= damage;
@@ -80,27 +99,32 @@ public class CombatScript : MonoBehaviour
         if (hitSound != null)
             hitSound.Play();
 
-        // Check if the player is dead
+        if (painSound != null)
+            painSound.Play();
+
+        // Trigger the death animation if the player's health reaches zero
         if (currentHealth <= 0)
         {
-            StartCoroutine(PlayerDeathCoroutine());
+            currentHealth = 0;
+            UpdateHealthUI();
+            animator.SetBool("IsDead", true);
+            isDead = true;
+            // Disable the object instead of disabling player movement
+            if (deathAnimation != null)
+                deathAnimation.SetActive(false);
+
+            // Enable the game over UI
+            if (gameOverUI != null)
+                gameOverUI.SetActive(true);
+
+            // Wait for 3 seconds before loading a new scene
+            StartCoroutine(LoadNewSceneAfterDelay(3f));
         }
     }
 
-    IEnumerator PlayerDeathCoroutine()
+    IEnumerator LoadNewSceneAfterDelay(float delay)
     {
-        // Play the death animation
-        // Assuming you have an "IsDead" parameter in your animator controller to trigger the death animation
-        animator.SetBool("IsDead", true);
-        movementInput.enabled = false; // Disable player movement
-        yield return new WaitForSeconds(3f); // Wait for the death animation to finish
-
-        // Enable the game over UI
-        if (gameOverUI != null)
-            gameOverUI.SetActive(true);
-
-        // Wait for 3 seconds before loading a new scene
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(delay);
 
         // Load a new scene (replace "YourSceneName" with the actual name of the scene you want to load)
         SceneManager.LoadScene("YourSceneName");
@@ -142,6 +166,14 @@ public class CombatScript : MonoBehaviour
 
         //AttackTarget
         Attack(lockedTarget, TargetDistance(lockedTarget));
+    }
+
+    // Function to update the UI to display the number of hits until the new attack is available
+    void UpdateHitCountUI()
+    {
+        // Assuming you have a UI text element to display the hit count
+        // Replace "hitCountText" with the actual reference to your UI text element
+        hitCountText.text = "Attacks until Pull: " + (10 - hitCount).ToString();
     }
 
     public void Attack(EnemyScript target, float distance)
@@ -256,6 +288,77 @@ public class CombatScript : MonoBehaviour
         }
     }
 
+    void SpinningBirdKickCheck()
+    {
+        if (isAttackingEnemy)
+            return;
+
+        // Check if the player has hit enemies 10 times
+        if (hitCount >= 10)
+        {
+            // Call the new attack function
+            SpinningBirdKick();
+        }
+        else
+        {
+            // Normal attack logic
+            // ... (existing code for regular attacks)
+        }
+    }
+    private void SpinningBirdKickInput()
+    {
+        if (!isDead && Input.GetKeyDown(KeyCode.E))
+        {
+            // Check if the player has hit enemies 10 times
+            if (hitCount >= 10)
+            {
+                // Call the new attack function
+                SpinningBirdKick();
+            }
+            else
+            {
+                // If the player hasn't hit enough times, you can play a sound or display a message indicating the requirement.
+                Debug.Log("Need 10 hits before using Spinning Bird Kick!");
+            }
+        }
+    }
+
+    void SpinningBirdKick()
+    {
+        float spinningBirdKickRadius = 50f; // Adjust the radius as needed
+
+        // Get all enemies within the spinningBirdKickRadius
+        EnemyScript[] enemiesInRadius = enemyManager.GetEnemiesInRadius(transform.position, spinningBirdKickRadius);
+
+        // Play the spinning bird kick animation
+        animator.SetTrigger("SpinningBirdKick");
+
+        // Damage enemies in the radius
+        int spinningBirdKickDamage = 20; // Adjust the damage amount as needed
+
+        foreach (EnemyScript enemy in enemiesInRadius)
+        {
+            // Calculate the direction from the enemy to the player
+            Vector3 directionToPlayer = (transform.position - enemy.transform.position).normalized;
+
+            // Apply a force to push the enemy away
+            float pushForce = 10f; // Adjust the force as needed
+            enemy.GetComponent<CharacterController>().Move(directionToPlayer * pushForce * Time.deltaTime);
+
+            // Reduce enemy's health
+            enemy.health -= spinningBirdKickDamage;
+          //  if (enemy.health <= 0)
+          //  {
+                // Handle enemy death (if needed)
+           //     enemy.Death();
+           // }
+        }
+
+        // Reset the hit count and update the UI
+        hitCount = 0;
+        UpdateHitCountUI();
+    }
+
     float TargetDistance(EnemyScript target)
     {
         return Vector3.Distance(transform.position, target.transform.position);
@@ -278,6 +381,12 @@ public class CombatScript : MonoBehaviour
         //Particle
         kickParticle.PlayParticleAtPosition(kickPosition.position);
         hitSound.Play();
+        // Increment the hit count
+        hitCount++;
+
+        // Update the UI to display the remaining hits until the new attack is available
+        UpdateHitCountUI();
+
     }
 
     public void DamageEvent()
@@ -302,6 +411,7 @@ public class CombatScript : MonoBehaviour
             movementInput.enabled = true;
             LerpCharacterAcceleration();
         }
+        
     }
 
     EnemyScript ClosestCounterEnemy()
@@ -345,12 +455,16 @@ public class CombatScript : MonoBehaviour
 
     private void OnCounter()
     {
-        CounterCheck();
+        // Only check for counter if the player is not dead
+        if (!isDead)
+            CounterCheck();
     }
 
     private void OnAttack()
     {
-        AttackCheck();
+        // Only check for attack if the player is not dead
+        if (!isDead)
+            AttackCheck();
     }
 
     #endregion

@@ -167,6 +167,25 @@ public class EnemyManager : MonoBehaviour
             FindObjectOfType<EnemyDetection>().SetCurrentTarget(null);
     }
 
+    public EnemyScript[] GetEnemiesInRadius(Vector3 center, float radius)
+    {
+        // Implement the logic to find and return the enemies within the radius.
+        // You can use Physics.OverlapSphere or any other appropriate method.
+        // For example:
+        Collider[] colliders = Physics.OverlapSphere(center, radius);
+        List<EnemyScript> enemiesInRadius = new List<EnemyScript>();
+
+        foreach (Collider collider in colliders)
+        {
+            EnemyScript enemy = collider.GetComponent<EnemyScript>();
+            if (enemy != null)
+            {
+                enemiesInRadius.Add(enemy);
+            }
+        }
+
+        return enemiesInRadius.ToArray();
+    }
 
 }
 
