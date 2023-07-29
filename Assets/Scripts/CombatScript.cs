@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
 using Cinemachine;
+using TMPro;
+using UnityEngine.SceneManagement;
 
 public class CombatScript : MonoBehaviour
 {
@@ -44,6 +46,15 @@ public class CombatScript : MonoBehaviour
     int animationCount = 0;
     string[] attacks;
 
+    [Header("Health Settings")]
+    public int maxHealth = 100;
+    private int currentHealth;
+
+    [Header("UI Elements")]
+    public TextMeshProUGUI healthText;
+    public GameObject deathAnimation;
+    public GameObject gameOverUI;
+
     void Start()
     {
         enemyManager = FindObjectOfType<EnemyManager>();
@@ -51,6 +62,54 @@ public class CombatScript : MonoBehaviour
         enemyDetection = GetComponentInChildren<EnemyDetection>();
         movementInput = GetComponent<MovementInput>();
         impulseSource = GetComponentInChildren<CinemachineImpulseSource>();
+        currentHealth = maxHealth;
+        UpdateHealthUI();
+    }
+
+    // This function gets called whenever the player receives damage
+    public void TakeDamage(int damage)
+    {
+        if (currentHealth <= 0)
+            return;
+
+        currentHealth -= damage;
+        currentHealth = Mathf.Max(currentHealth, 0);
+        UpdateHealthUI();
+
+        // Play the hit sound
+        if (hitSound != null)
+            hitSound.Play();
+
+        // Check if the player is dead
+        if (currentHealth <= 0)
+        {
+            StartCoroutine(PlayerDeathCoroutine());
+        }
+    }
+
+    IEnumerator PlayerDeathCoroutine()
+    {
+        // Play the death animation
+        // Assuming you have an "IsDead" parameter in your animator controller to trigger the death animation
+        animator.SetBool("IsDead", true);
+        movementInput.enabled = false; // Disable player movement
+        yield return new WaitForSeconds(3f); // Wait for the death animation to finish
+
+        // Enable the game over UI
+        if (gameOverUI != null)
+            gameOverUI.SetActive(true);
+
+        // Wait for 3 seconds before loading a new scene
+        yield return new WaitForSeconds(3f);
+
+        // Load a new scene (replace "YourSceneName" with the actual name of the scene you want to load)
+        SceneManager.LoadScene("YourSceneName");
+    }
+
+    void UpdateHealthUI()
+    {
+        if (healthText != null)
+            healthText.text = "Health: " + currentHealth.ToString();
     }
 
     //This function gets called whenever the player inputs the kick action
@@ -223,6 +282,13 @@ public class CombatScript : MonoBehaviour
 
     public void DamageEvent()
     {
+        if (currentHealth > 0)
+        {
+            animator.SetTrigger("Hit");
+
+            // Reduce player health by the specified damage amount
+            TakeDamage(10); // Assuming the player takes 10 damage on getting hit
+        }
         animator.SetTrigger("Hit");
 
         if (damageCoroutine != null)
