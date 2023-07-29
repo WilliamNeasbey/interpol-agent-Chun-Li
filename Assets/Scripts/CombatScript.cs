@@ -5,6 +5,8 @@ using DG.Tweening;
 using Cinemachine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
+
 
 public class CombatScript : MonoBehaviour
 {
@@ -14,7 +16,9 @@ public class CombatScript : MonoBehaviour
     private Animator animator;
     private CinemachineImpulseSource impulseSource;
     public AudioSource hitSound;
-    public AudioSource painSound;
+    public AudioSource painSound; 
+    private InputAction spinningBirdKickAction;
+
 
     [Header("Target")]
     private EnemyScript lockedTarget;
@@ -77,6 +81,12 @@ public class CombatScript : MonoBehaviour
         impulseSource = GetComponentInChildren<CinemachineImpulseSource>();
         currentHealth = maxHealth;
         UpdateHealthUI();
+
+        // Get a reference to the Spinning Bird Kick input action
+        spinningBirdKickAction = new InputAction("SpinningBirdKick", InputActionType.Button, "<Keyboard>/e");
+        spinningBirdKickAction.Enable();
+
+        
     }
     void Update()
     {
@@ -305,10 +315,13 @@ public class CombatScript : MonoBehaviour
             // ... (existing code for regular attacks)
         }
     }
+
+
     private void SpinningBirdKickInput()
     {
-        if (!isDead && Input.GetKeyDown(KeyCode.E))
+        if (!isDead && spinningBirdKickAction.triggered)
         {
+            Debug.Log("Spinning Bird Kick input detected!");
             // Check if the player has hit enemies 10 times
             if (hitCount >= 10)
             {
@@ -323,9 +336,12 @@ public class CombatScript : MonoBehaviour
         }
     }
 
-    void SpinningBirdKick()
+    public void SpinningBirdKick()
     {
-        float spinningBirdKickRadius = 50f; // Adjust the radius as needed
+        // Adjust the values as needed
+        float spinningBirdKickRadius = 5f;
+        int spinningBirdKickDamage = 20;
+        float pullForce = 20f;
 
         // Get all enemies within the spinningBirdKickRadius
         EnemyScript[] enemiesInRadius = enemyManager.GetEnemiesInRadius(transform.position, spinningBirdKickRadius);
@@ -333,31 +349,55 @@ public class CombatScript : MonoBehaviour
         // Play the spinning bird kick animation
         animator.SetTrigger("SpinningBirdKick");
 
-        // Damage enemies in the radius
-        int spinningBirdKickDamage = 20; // Adjust the damage amount as needed
-
         foreach (EnemyScript enemy in enemiesInRadius)
         {
-            // Calculate the direction from the enemy to the player
-            Vector3 directionToPlayer = (transform.position - enemy.transform.position).normalized;
-
-            // Apply a force to push the enemy away
-            float pushForce = 10f; // Adjust the force as needed
-            enemy.GetComponent<CharacterController>().Move(directionToPlayer * pushForce * Time.deltaTime);
+            if (!enemy.gameObject.activeInHierarchy)
+                continue;
 
             // Reduce enemy's health
             enemy.health -= spinningBirdKickDamage;
-          //  if (enemy.health <= 0)
-          //  {
-                // Handle enemy death (if needed)
-           //     enemy.Death();
-           // }
+            if (enemy.health <= 0)
+            {
+                // Enemy is dead, handle the death here
+                // For example, play death animation, spawn particles, etc.
+                // Then, disable the enemy object
+                //enemy.gameObject.SetActive(false);
+            }
+            else
+            {
+                // Calculate the direction from the enemy to the player
+                Vector3 directionToPlayer = (transform.position - enemy.transform.position).normalized;
+
+                // Apply a force to pull the enemy towards the player
+                enemy.MoveTowards(transform.position, pullForce);
+            }
         }
 
         // Reset the hit count and update the UI
         hitCount = 0;
         UpdateHitCountUI();
     }
+
+
+
+    IEnumerator MoveEnemyOverTime(EnemyScript enemy, Vector3 moveVector)
+    {
+        float moveDuration = 0.5f; // Adjust the duration as needed
+        float elapsedTime = 0f;
+        Vector3 startingPosition = enemy.transform.position;
+
+        while (elapsedTime < moveDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsedTime / moveDuration);
+
+            // Move the enemy using a smooth interpolation
+            enemy.transform.position = Vector3.Lerp(startingPosition, startingPosition + moveVector, t);
+
+            yield return null;
+        }
+    }
+
 
     float TargetDistance(EnemyScript target)
     {

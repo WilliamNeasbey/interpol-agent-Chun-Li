@@ -303,6 +303,13 @@ public class EnemyScript : MonoBehaviour
             StopCoroutine(MovementCoroutine);
     }
 
+    public void MoveTowards(Vector3 targetPosition, float pullForce)
+    {
+        Vector3 moveDirection = (targetPosition - transform.position).normalized * pullForce * Time.deltaTime;
+        characterController.Move(moveDirection);
+    }
+
+
     #region Public Booleans
 
     public bool IsAttackable()
