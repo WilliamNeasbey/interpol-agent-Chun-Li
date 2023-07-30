@@ -641,7 +641,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: LightningKicks
-  m_Speed: 1
+  m_Speed: 2
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 2581694579069851521}
@@ -654,7 +654,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: bbc3930d5e99032439de928d3ac55232, type: 2}
+  m_Motion: {fileID: 7400000, guid: 560d7be693c98464caca543b2752798c, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
