@@ -16,10 +16,11 @@ public class CombatScript : MonoBehaviour
     private Animator animator;
     private CinemachineImpulseSource impulseSource;
     public AudioSource hitSound;
-    public AudioSource painSound; 
-    private InputAction spinningBirdKickAction;
+    public AudioSource painSound;
     public AudioSource SpinningbirdkickSound;
-    
+    private InputAction spinningBirdKickAction;
+    private InputAction lightningKicksAction; // New InputAction for Lightning Kicks
+
 
     [Header("Target")]
     private EnemyScript lockedTarget;
@@ -59,17 +60,18 @@ public class CombatScript : MonoBehaviour
 
     [Header("UI Elements")]
     public TextMeshProUGUI healthText;
+    public TextMeshProUGUI hitCountText; // Existing hit count UI
+    public TextMeshProUGUI lightningKicksHitCountText; // New hit count UI for Lightning Kicks
     public GameObject deathAnimation;
     public GameObject gameOverUI;
 
     [Header("Movement Disable")]
     public GameObject DisableMovement;
 
-    [SerializeField] private float spinningBirdKickRadius = 50f;
-
-    //hit counter
+    //hit counters
     public int hitCount = 0;
-    [SerializeField] private TextMeshProUGUI hitCountText;
+    public int hitCounterLightningKicks = 0; // New hit counter for Lightning Kicks
+    private int lightningKicksHitRequirement = 15; // New hit requirement for Lightning Kicks
 
 
 
@@ -87,11 +89,14 @@ public class CombatScript : MonoBehaviour
         spinningBirdKickAction = new InputAction("SpinningBirdKick", InputActionType.Button, "<Keyboard>/e");
         spinningBirdKickAction.Enable();
 
-        
+        // Get a reference to the Lightning Kicks input action
+        lightningKicksAction = new InputAction("LightningKicks", InputActionType.Button, "<Keyboard>/q");
+        lightningKicksAction.Enable();
     }
+
     void Update()
     {
-       
+        LightningKicksInput(); // Call the function to handle Lightning Kicks input
 
         SpinningBirdKickInput(); // Call the new function to handle Spinning Bird Kick input
     }
@@ -182,8 +187,11 @@ public class CombatScript : MonoBehaviour
     // Function to update the UI to display the number of hits until the new attack is available
     void UpdateHitCountUI()
     {
-        int remainingHits = Mathf.Max(10 - hitCount, 0);
-        hitCountText.text =  remainingHits.ToString();
+        if (hitCountText != null)
+            hitCountText.text =  Mathf.Max(10 - hitCount, 0).ToString(); // Update normal hits UI
+
+        if (lightningKicksHitCountText != null)
+            lightningKicksHitCountText.text =  Mathf.Max(lightningKicksHitRequirement - hitCounterLightningKicks, 0).ToString(); // Update Lightning Kicks UI
     }
 
     public void Attack(EnemyScript target, float distance)
@@ -381,6 +389,39 @@ public class CombatScript : MonoBehaviour
         UpdateHitCountUI();
     }
 
+    private void LightningKicksInput()
+    {
+        if (!isDead && lightningKicksAction.triggered)
+        {
+            Debug.Log("Lightning Kicks input detected!");
+            // Check if the player has hit enemies enough times to use Lightning Kicks
+            if (hitCounterLightningKicks >= lightningKicksHitRequirement)
+            {
+                // Call the new attack function
+                LightningKicks();
+            }
+            else
+            {
+                // If the player hasn't hit enough times, you can play a sound or display a message indicating the requirement.
+                Debug.Log("Need " + lightningKicksHitRequirement + " hits before using Lightning Kicks!");
+            }
+        }
+    }
+
+    public void LightningKicks()
+    {
+        // Play the lightning kicks animation
+        animator.SetTrigger("LightningKicks");
+
+        // Play the sound
+        if (SpinningbirdkickSound != null)
+            SpinningbirdkickSound.Play();
+
+        // Reset the hit count for Lightning Kicks and update the UI
+        hitCounterLightningKicks = 0;
+        UpdateHitCountUI();
+    }
+
 
 
     IEnumerator MoveEnemyOverTime(EnemyScript enemy, Vector3 moveVector)
@@ -430,6 +471,29 @@ public class CombatScript : MonoBehaviour
         // Update the UI to display the remaining hits until the new attack is available
         UpdateHitCountUI();
 
+        // Increment the hit count for Lightning Kicks
+        hitCounterLightningKicks++;
+
+        // Update the UI to display the remaining hits until the new attack is available
+        UpdateHitCountUI();
+
+        // Check if the player pressed the input for Lightning Kicks
+        if (!isDead && lightningKicksAction.triggered)
+        {
+            Debug.Log("Lightning Kicks input detected!");
+
+            // Check if the player has hit enemies enough times to use Lightning Kicks
+            if (hitCounterLightningKicks >= lightningKicksHitRequirement)
+            {
+                // Call the new attack function
+                LightningKicks();
+            }
+            else
+            {
+                // If the player hasn't hit enough times, you can play a sound or display a message indicating the requirement.
+                Debug.Log("Need " + lightningKicksHitRequirement + " hits before using Lightning Kicks!");
+            }
+        }
     }
 
     public void DamageEvent()
