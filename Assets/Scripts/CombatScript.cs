@@ -18,7 +18,8 @@ public class CombatScript : MonoBehaviour
     public AudioSource hitSound;
     public AudioSource painSound; 
     private InputAction spinningBirdKickAction;
-
+    public AudioSource SpinningbirdkickSound;
+    
 
     [Header("Target")]
     private EnemyScript lockedTarget;
@@ -181,9 +182,8 @@ public class CombatScript : MonoBehaviour
     // Function to update the UI to display the number of hits until the new attack is available
     void UpdateHitCountUI()
     {
-        // Assuming you have a UI text element to display the hit count
-        // Replace "hitCountText" with the actual reference to your UI text element
-        hitCountText.text = "Attacks until Pull: " + (10 - hitCount).ToString();
+        int remainingHits = Mathf.Max(10 - hitCount, 0);
+        hitCountText.text =  remainingHits.ToString();
     }
 
     public void Attack(EnemyScript target, float distance)
@@ -348,7 +348,10 @@ public class CombatScript : MonoBehaviour
 
         // Play the spinning bird kick animation
         animator.SetTrigger("SpinningBirdKick");
-
+       
+        // Play the  sound
+        if (SpinningbirdkickSound != null)
+            SpinningbirdkickSound.Play();
         foreach (EnemyScript enemy in enemiesInRadius)
         {
             if (!enemy.gameObject.activeInHierarchy)
