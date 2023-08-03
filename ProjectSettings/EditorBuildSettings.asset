@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Duloc.unity
     guid: 9dfc18ff0f921244992fbafb6e7818bb
+  - enabled: 1
+    path: Assets/Scenes/Freddy.unity
+    guid: ca55f711311248b40a34b49eca191e59
   m_configObjects: {}
