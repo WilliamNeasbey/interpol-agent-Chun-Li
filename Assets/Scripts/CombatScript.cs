@@ -18,6 +18,7 @@ public class CombatScript : MonoBehaviour
     public AudioSource hitSound;
     public AudioSource painSound;
     public AudioSource SpinningbirdkickSound;
+    public AudioSource LightningkickSound;
     private InputAction spinningBirdKickAction;
     private InputAction lightningKicksAction; // New InputAction for Lightning Kicks
 
@@ -414,8 +415,8 @@ public class CombatScript : MonoBehaviour
         animator.SetTrigger("LightningKicks");
 
         // Play the sound
-        if (SpinningbirdkickSound != null)
-            SpinningbirdkickSound.Play();
+        if (LightningkickSound != null)
+            LightningkickSound.Play();
 
         // Reset the hit count for Lightning Kicks and update the UI
         hitCounterLightningKicks = 0;
