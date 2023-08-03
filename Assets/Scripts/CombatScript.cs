@@ -143,8 +143,8 @@ public class CombatScript : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
-        // Load a new scene (replace "YourSceneName" with the actual name of the scene you want to load)
-        SceneManager.LoadScene("YourSceneName");
+        // Load a new scene 
+        SceneManager.LoadScene("LoseScreen");
     }
 
     void UpdateHealthUI()
