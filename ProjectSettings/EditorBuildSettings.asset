@@ -20,4 +20,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LoseScreen.unity
     guid: e60051a6119aa5348bbe660341dbd0e6
+  - enabled: 1
+    path: Assets/Scenes/CutscenePurpleGuyTransform.unity
+    guid: 0a0424dd16624c7419ba1ba51a16804c
+  - enabled: 1
+    path: Assets/Scenes/FreddyPart2.unity
+    guid: 9738e6a61e16f9847ab7831b6c23ce73
   m_configObjects: {}

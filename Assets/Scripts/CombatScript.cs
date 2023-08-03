@@ -72,7 +72,7 @@ public class CombatScript : MonoBehaviour
     //hit counters
     public int hitCount = 0;
     public int hitCounterLightningKicks = 0; // New hit counter for Lightning Kicks
-    private int lightningKicksHitRequirement = 15; // New hit requirement for Lightning Kicks
+    private int lightningKicksHitRequirement = 44; // New hit requirement for Lightning Kicks
 
 
 
@@ -189,7 +189,7 @@ public class CombatScript : MonoBehaviour
     void UpdateHitCountUI()
     {
         if (hitCountText != null)
-            hitCountText.text =  Mathf.Max(10 - hitCount, 0).ToString(); // Update normal hits UI
+            hitCountText.text =  Mathf.Max(20 - hitCount, 0).ToString(); // Update normal hits UI
 
         if (lightningKicksHitCountText != null)
             lightningKicksHitCountText.text =  Mathf.Max(lightningKicksHitRequirement - hitCounterLightningKicks, 0).ToString(); // Update Lightning Kicks UI
@@ -313,7 +313,7 @@ public class CombatScript : MonoBehaviour
             return;
 
         // Check if the player has hit enemies 10 times
-        if (hitCount >= 10)
+        if (hitCount >= 20)
         {
             // Call the new attack function
             SpinningBirdKick();
@@ -332,7 +332,7 @@ public class CombatScript : MonoBehaviour
         {
             Debug.Log("Spinning Bird Kick input detected!");
             // Check if the player has hit enemies 10 times
-            if (hitCount >= 10)
+            if (hitCount >= 20)
             {
                 // Call the new attack function
                 SpinningBirdKick();
