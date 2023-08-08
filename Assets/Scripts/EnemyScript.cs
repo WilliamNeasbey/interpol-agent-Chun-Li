@@ -92,7 +92,16 @@ public class EnemyScript : MonoBehaviour
     }
 
     //Listened event from Player Animation
-    void OnPlayerHit(EnemyScript target)
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("PlayerHitCollider")) // Modify the tag as needed
+        {
+            // Call the OnPlayerHit method directly, passing the current enemy as the target
+            OnPlayerHit(this);
+        }
+    }
+
+    private void OnPlayerHit(EnemyScript target)
     {
         if (target == this)
         {
@@ -116,13 +125,13 @@ public class EnemyScript : MonoBehaviour
 
             StopMoving();
         }
+    }
 
-        IEnumerator HitCoroutine()
-        {
-            isStunned = true;
-            yield return new WaitForSeconds(.5f);
-            isStunned = false;
-        }
+    IEnumerator HitCoroutine()
+    {
+        isStunned = true;
+        yield return new WaitForSeconds(.5f);
+        isStunned = false;
     }
 
     void OnPlayerCounter(EnemyScript target)
