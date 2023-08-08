@@ -11,6 +11,7 @@ public class EnemyScript : MonoBehaviour
     private EnemyManager enemyManager;
     private EnemyDetection enemyDetection;
     private CharacterController characterController;
+    public Collider enemyHitbox; // Reference to the enemy's hitbox collider
 
     [Header("Stats")]
     public int health = 3;
@@ -36,7 +37,8 @@ public class EnemyScript : MonoBehaviour
     //Events
     public UnityEvent<EnemyScript> OnDamage;
     public UnityEvent<EnemyScript> OnStopMoving;
-    public UnityEvent<EnemyScript> OnRetreat;
+    public UnityEvent<EnemyScript> OnRetreat; 
+    
 
     void Start()
     {
@@ -270,10 +272,30 @@ public class EnemyScript : MonoBehaviour
         }
     }
 
+
     private void Attack()
     {
+        // Enable the enemy's hitbox collider during the attack animation
+        enemyHitbox.enabled = true;
+
         transform.DOMove(transform.position + (transform.forward / 1), .5f);
         animator.SetTrigger("Punch");
+    }
+
+    // This function is called at the end of the attack animation to disable the hitbox collider
+    private void DisableHitbox()
+    {
+        enemyHitbox.enabled = false;
+    }
+    
+    // This function is called whenever the enemy's state changes (e.g., animation changes)
+    private void OnStateChanged(AnimatorStateInfo stateInfo)
+    {
+        // If the enemy's state is not the attack animation, disable the hitbox collider
+        if (!stateInfo.IsName("Punch"))
+        {
+            enemyHitbox.enabled = false;
+        }
     }
 
     public void HitEvent()

@@ -103,6 +103,16 @@ public class CombatScript : MonoBehaviour
     }
 
     // This function gets called whenever the player receives damage
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("enemyhitbox")) 
+        {
+            TakeDamage(10); // Assuming the player takes 10 damage on getting hit
+            DamageEvent();
+        }
+    }
+
     public void TakeDamage(int damage)
     {
         if (isDead)
