@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+
 public class TransitionMusic : MonoBehaviour
 {
     private static TransitionMusic instance;
@@ -10,7 +11,6 @@ public class TransitionMusic : MonoBehaviour
     private string currentSceneName;
     private float currentSceneDelay = 0f;
 
-    // Ensure only one instance of MusicPlayer exists
     private void Awake()
     {
         if (instance == null)
@@ -27,23 +27,28 @@ public class TransitionMusic : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-    // Play music if already triggered
     private void Start()
     {
         currentSceneName = SceneManager.GetActiveScene().name;
         currentSceneDelay = GetSceneDelay(currentSceneName);
 
-        if (currentSceneDelay > 0f && !musicTriggered)
+        if (ShouldPlayMusicOnScene(currentSceneName))
         {
-            StartCoroutine(StartMusicWithDelay(currentSceneDelay));
+            if (currentSceneDelay > 0f && !musicTriggered)
+            {
+                StartCoroutine(StartMusicWithDelay(currentSceneDelay));
+            }
+            else if (musicTriggered && !audioSource.isPlaying)
+            {
+                audioSource.Play();
+            }
         }
-        else if (musicTriggered && !audioSource.isPlaying)
+        else if (musicTriggered)
         {
-            audioSource.Play();
+            audioSource.Stop();
         }
     }
 
-    // Call this method to trigger the music playback
     public void TriggerMusic()
     {
         musicTriggered = true;
@@ -53,14 +58,12 @@ public class TransitionMusic : MonoBehaviour
         }
     }
 
-    // Wait for the initial delay before triggering music
     private IEnumerator StartMusicWithDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
         TriggerMusic();
     }
 
-    // Check if music should play when a new scene is loaded
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -77,26 +80,30 @@ public class TransitionMusic : MonoBehaviour
         currentSceneName = newSceneName;
         currentSceneDelay = GetSceneDelay(newSceneName);
 
-        // Always trigger the music when a new scene is loaded, ignoring the initial delay for subsequent scenes
-        if (currentSceneDelay > 0f && !musicTriggered)
+        if (ShouldPlayMusicOnScene(currentSceneName))
         {
-            StartCoroutine(StartMusicWithDelay(currentSceneDelay));
+            if (currentSceneDelay > 0f && !musicTriggered)
+            {
+                StartCoroutine(StartMusicWithDelay(currentSceneDelay));
+            }
+            else if (musicTriggered && !audioSource.isPlaying)
+            {
+                audioSource.Play();
+            }
         }
-        else if (musicTriggered && !audioSource.isPlaying)
-        {
-            audioSource.Play();
-        }
-
-        // Stop the music when transitioning to Scene3
-        if (currentSceneName == "titleScreen")
+        else if (musicTriggered)
         {
             audioSource.Stop();
         }
     }
 
+    private bool ShouldPlayMusicOnScene(string sceneName)
+    {
+        return sceneName == "CutscenePurpleGuyTransform" || sceneName == "FreddyPart2";
+    }
+
     private float GetSceneDelay(string sceneName)
     {
-        // Set different delay times for specific scenes
         if (sceneName == "CutscenePurpleGuyTransform")
         {
             return 17f; // Replace with the desired delay time for Scene1 in seconds
@@ -105,9 +112,6 @@ public class TransitionMusic : MonoBehaviour
         {
             return 0.1f; // Replace with the desired delay time for Scene2 in seconds
         }
-
-        // Add more conditions for other scenes as needed
-        // If the scene is not listed here, it will have no delay (0 seconds)
 
         return 0f; // Default delay time for scenes not specified above
     }
