@@ -19,9 +19,13 @@ public class CombatScript : MonoBehaviour
     public AudioSource painSound;
     public AudioSource SpinningbirdkickSound;
     public AudioSource LightningkickSound;
+    public AudioSource kamehamehaSound; // Reference to the AudioSource for Kamehameha sound
+
     private InputAction spinningBirdKickAction;
     private InputAction lightningKicksAction; // New InputAction for Lightning Kicks
     private InputAction kamehamehaInputAction; // New InputAction for Lightning Kicks
+    private float kamehamehaCooldown = 1.5f; // Cooldown duration in seconds
+    private bool isKamehamehaOnCooldown = false;
 
 
     [Header("Target")]
@@ -338,7 +342,7 @@ public class CombatScript : MonoBehaviour
         else
         {
             // Normal attack logic
-            // ... (existing code for regular attacks)
+            
         }
     }
 
@@ -453,19 +457,33 @@ public class CombatScript : MonoBehaviour
     public void Kamehameha()
     {
         // Check if the player is attacking an enemy before performing the kamehameha
-        if (isAttackingEnemy)
+        if (isAttackingEnemy || isKamehamehaOnCooldown)
             return;
 
         // Play the Kamehameha animation
         animator.SetTrigger("Kamehameha");
 
+        // Play the Kamehameha sound
+        if (kamehamehaSound != null)
+            kamehamehaSound.Play();
+
         // Wait for a short delay to synchronize with the animation
         StartCoroutine(PerformKamehamehaWithDelay());
+
+        // Start the cooldown timer
+        StartCoroutine(StartKamehamehaCooldown());
+    }
+
+    private IEnumerator StartKamehamehaCooldown()
+    {
+        isKamehamehaOnCooldown = true;
+        yield return new WaitForSeconds(kamehamehaCooldown);
+        isKamehamehaOnCooldown = false;
     }
 
     private IEnumerator PerformKamehamehaWithDelay()
     {
-        yield return new WaitForSeconds(0.2f); // Adjust the delay as needed
+        yield return new WaitForSeconds(0.5f); // Adjust the delay as needed
 
         // Instantiate the kamehameha prefab at the kick position with the same rotation as the player
         GameObject kamehamehaObject = Instantiate(kamehamehaPrefab, kickPosition.position, transform.rotation);
