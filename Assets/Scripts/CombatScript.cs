@@ -21,6 +21,7 @@ public class CombatScript : MonoBehaviour
     public AudioSource LightningkickSound;
     private InputAction spinningBirdKickAction;
     private InputAction lightningKicksAction; // New InputAction for Lightning Kicks
+    private InputAction kamehamehaInputAction; // New InputAction for Lightning Kicks
 
 
     [Header("Target")]
@@ -38,6 +39,7 @@ public class CombatScript : MonoBehaviour
     [SerializeField] private ParticleSystemScript kickParticle;
     [SerializeField] private GameObject lastHitCamera;
     [SerializeField] private Transform lastHitFocusObject;
+    [SerializeField] private GameObject kamehamehaPrefab;
 
     //Coroutines
     private Coroutine counterCoroutine;
@@ -93,13 +95,18 @@ public class CombatScript : MonoBehaviour
         // Get a reference to the Lightning Kicks input action
         lightningKicksAction = new InputAction("LightningKicks", InputActionType.Button, "<Keyboard>/q");
         lightningKicksAction.Enable();
+
+        kamehamehaInputAction = new InputAction("Kamehameha", InputActionType.Button, "<Keyboard>/x");
+        kamehamehaInputAction.Enable();
     }
 
     void Update()
     {
-        LightningKicksInput(); // Call the function to handle Lightning Kicks input
+        LightningKicksInput(); 
 
-        SpinningBirdKickInput(); // Call the new function to handle Spinning Bird Kick input
+        SpinningBirdKickInput(); 
+        KamehamehaInput(); 
+
     }
 
     // This function gets called whenever the player receives damage
@@ -433,7 +440,36 @@ public class CombatScript : MonoBehaviour
         UpdateHitCountUI();
     }
 
+    private void KamehamehaInput()
+    {
+        if (!isDead && kamehamehaInputAction.triggered)
+        {
+            Debug.Log("Kamehameha input detected!");
+            // Call the new attack function
+            Kamehameha();
+        }
+    }
 
+    public void Kamehameha()
+    {
+        // Check if the player is attacking an enemy before performing the kamehameha
+        if (isAttackingEnemy)
+            return;
+
+        // Play the Kamehameha animation
+        animator.SetTrigger("Kamehameha");
+
+        // Wait for a short delay to synchronize with the animation
+        StartCoroutine(PerformKamehamehaWithDelay());
+    }
+
+    private IEnumerator PerformKamehamehaWithDelay()
+    {
+        yield return new WaitForSeconds(0.2f); // Adjust the delay as needed
+
+        // Instantiate the kamehameha prefab at the kick position with the same rotation as the player
+        GameObject kamehamehaObject = Instantiate(kamehamehaPrefab, kickPosition.position, transform.rotation);
+    }
 
     IEnumerator MoveEnemyOverTime(EnemyScript enemy, Vector3 moveVector)
     {

@@ -58,6 +58,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "kamehameha",
+                    "type": "Button",
+                    "id": "36b501a4-836f-43e5-8d8e-344b50a408f2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -168,6 +177,17 @@
                     "processors": "",
                     "groups": "KeyboardMouse",
                     "action": "LightningKicks",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7017f96f-da58-4551-af04-ca3fcb2bad52",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "kamehameha",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
