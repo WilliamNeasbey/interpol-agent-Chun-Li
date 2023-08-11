@@ -15188,6 +15188,7 @@ MonoBehaviour:
   painSound: {fileID: 920189632}
   SpinningbirdkickSound: {fileID: 1029517346}
   LightningkickSound: {fileID: 803377173}
+  kamehamehaSound: {fileID: 0}
   attackCooldown: 0.7
   isAttackingEnemy: 0
   isCountering: 0
@@ -15195,6 +15196,7 @@ MonoBehaviour:
   kickParticle: {fileID: 1354300346}
   lastHitCamera: {fileID: 379132757}
   lastHitFocusObject: {fileID: 1231583397}
+  kamehamehaPrefab: {fileID: 0}
   OnTrajectory:
     m_PersistentCalls:
       m_Calls: []
@@ -26994,7 +26996,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   winScreen: {fileID: 660002738}
-  delayBeforeLoading: 0.2
+  delayBeforeLoading: 1
   nextSceneName: CutscenePurpleGuyTransform
 --- !u!4 &1841090062
 Transform:

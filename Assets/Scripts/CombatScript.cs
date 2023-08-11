@@ -119,7 +119,7 @@ public class CombatScript : MonoBehaviour
     {
         if (other.CompareTag("enemyhitbox")) 
         {
-            TakeDamage(10); // Assuming the player takes 10 damage on getting hit
+            TakeDamage(5); // Assuming the player takes 10 damage on getting hit
             DamageEvent();
         }
     }
@@ -449,6 +449,7 @@ public class CombatScript : MonoBehaviour
         if (!isDead && kamehamehaInputAction.triggered)
         {
             Debug.Log("Kamehameha input detected!");
+            Debug.Log("Kamehameha input detected!");
             // Call the new attack function
             Kamehameha();
         }
@@ -568,7 +569,7 @@ public class CombatScript : MonoBehaviour
             animator.SetTrigger("Hit");
 
             // Reduce player health by the specified damage amount
-            TakeDamage(10); // Assuming the player takes 10 damage on getting hit
+            TakeDamage(5); // Assuming the player takes 10 damage on getting hit
         }
         animator.SetTrigger("Hit");
 
