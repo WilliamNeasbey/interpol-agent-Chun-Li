@@ -32,4 +32,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TSquare.unity
     guid: 76cb317c472a0f74e80d802c489a1db9
+  - enabled: 1
+    path: Assets/Scenes/WateryGraves.unity
+    guid: 63a6812152f280d4389b540409b2231b
   m_configObjects: {}
