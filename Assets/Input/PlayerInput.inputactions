@@ -67,6 +67,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "sephiroth",
+                    "type": "Button",
+                    "id": "c38e292a-87fe-4b98-b000-d157d6fbf96b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -188,6 +197,17 @@
                     "processors": "",
                     "groups": "KeyboardMouse",
                     "action": "kamehameha",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "30c89e5b-a6bd-43b2-a181-37566c60dcf6",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "sephiroth",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

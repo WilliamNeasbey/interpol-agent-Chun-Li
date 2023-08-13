@@ -19,13 +19,17 @@ public class CombatScript : MonoBehaviour
     public AudioSource painSound;
     public AudioSource SpinningbirdkickSound;
     public AudioSource LightningkickSound;
-    public AudioSource kamehamehaSound; // Reference to the AudioSource for Kamehameha sound
+    public AudioSource kamehamehaSound; 
+    public AudioSource sephirothSound;
 
     private InputAction spinningBirdKickAction;
-    private InputAction lightningKicksAction; // New InputAction for Lightning Kicks
-    private InputAction kamehamehaInputAction; // New InputAction for Lightning Kicks
+    private InputAction lightningKicksAction; 
+    private InputAction kamehamehaInputAction; 
     private float kamehamehaCooldown = 1.5f; // Cooldown duration in seconds
     private bool isKamehamehaOnCooldown = false;
+    private InputAction sephirothInputAction;
+    private float sephirothCooldown = 1.5f; // Cooldown duration in seconds
+    private bool isSephirothOnCooldown = false;
 
 
     [Header("Target")]
@@ -44,6 +48,8 @@ public class CombatScript : MonoBehaviour
     [SerializeField] private GameObject lastHitCamera;
     [SerializeField] private Transform lastHitFocusObject;
     [SerializeField] private GameObject kamehamehaPrefab;
+    [SerializeField] private GameObject sephirothPrefab;
+
 
     //Coroutines
     private Coroutine counterCoroutine;
@@ -102,6 +108,9 @@ public class CombatScript : MonoBehaviour
 
         kamehamehaInputAction = new InputAction("Kamehameha", InputActionType.Button, "<Keyboard>/x");
         kamehamehaInputAction.Enable();
+        
+        sephirothInputAction = new InputAction("sephiroth", InputActionType.Button, "<Keyboard>/c");
+        sephirothInputAction.Enable();
     }
 
     void Update()
@@ -109,8 +118,8 @@ public class CombatScript : MonoBehaviour
         LightningKicksInput(); 
 
         SpinningBirdKickInput(); 
-        KamehamehaInput(); 
-
+        KamehamehaInput();
+        SephirothInput();
     }
 
     // This function gets called whenever the player receives damage
@@ -490,6 +499,51 @@ public class CombatScript : MonoBehaviour
         GameObject kamehamehaObject = Instantiate(kamehamehaPrefab, kickPosition.position, transform.rotation);
     }
 
+    private void SephirothInput()
+    {
+        if (!isDead && sephirothInputAction.triggered)
+        {
+            Debug.Log("sephiroth input detected!");
+            Debug.Log("sephiroth input detected!");
+            // Call the new attack function
+            Sephiroth();
+        }
+    }
+
+    public void Sephiroth()
+    {
+        // Check if the player is attacking an enemy before performing the sephiorth fireball
+        if (isAttackingEnemy || isSephirothOnCooldown)
+            return;
+
+        // Play the sephiroth animation
+        animator.SetTrigger("Sephiroth");
+
+        // Play the sephiroth sound
+        if (sephirothSound != null)
+            sephirothSound.Play();
+
+        // Wait for a short delay to synchronize with the animation
+        StartCoroutine(PerformSephirothWithDelay());
+
+        // Start the cooldown timer
+        StartCoroutine(StartSephirothCooldown());
+    }
+
+    private IEnumerator StartSephirothCooldown()
+    {
+        isSephirothOnCooldown = true;
+        yield return new WaitForSeconds(kamehamehaCooldown);
+        isSephirothOnCooldown = false;
+    }
+
+    private IEnumerator PerformSephirothWithDelay()
+    {
+        yield return new WaitForSeconds(0.5f); // Adjust the delay as needed
+
+        // Instantiate the sephiroth prefab at the kick position with the same rotation as the player
+        GameObject sephirothObject = Instantiate(sephirothPrefab, kickPosition.position, transform.rotation);
+    }
     IEnumerator MoveEnemyOverTime(EnemyScript enemy, Vector3 moveVector)
     {
         float moveDuration = 0.5f; // Adjust the duration as needed
@@ -561,6 +615,7 @@ public class CombatScript : MonoBehaviour
             }
         }
     }
+
 
     public void DamageEvent()
     {
