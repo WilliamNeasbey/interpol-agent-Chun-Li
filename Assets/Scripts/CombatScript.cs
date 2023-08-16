@@ -31,6 +31,12 @@ public class CombatScript : MonoBehaviour
     private float sephirothCooldown = 1.5f; // Cooldown duration in seconds
     private bool isSephirothOnCooldown = false;
 
+    private InputAction swordsOfSpartaInputAction;
+    private bool isSwordsOfSpartaActive = false;
+    private float swordsOfSpartaDuration = 5f; // Duration for Swords of Sparta effect
+
+    public GameObject swordsOfSpartaObject; // Reference to the Swords of Sparta game object
+    public AudioSource swordsOfSpartaActivationSound; // Sound to play on Swords of Sparta activation
 
     [Header("Target")]
     private EnemyScript lockedTarget;
@@ -111,6 +117,10 @@ public class CombatScript : MonoBehaviour
         
         sephirothInputAction = new InputAction("sephiroth", InputActionType.Button, "<Keyboard>/c");
         sephirothInputAction.Enable();
+
+        swordsOfSpartaInputAction = new InputAction("SwordsOfSparta", InputActionType.Button, "<Keyboard>/z");
+        swordsOfSpartaInputAction.Enable();
+
     }
 
     void Update()
@@ -120,6 +130,8 @@ public class CombatScript : MonoBehaviour
         SpinningBirdKickInput(); 
         KamehamehaInput();
         SephirothInput();
+        SwordsOfSpartaInput();
+        UpdateHitCountUI();
     }
 
     // This function gets called whenever the player receives damage
@@ -562,6 +574,37 @@ public class CombatScript : MonoBehaviour
         }
     }
 
+    private void SwordsOfSpartaInput()
+    {
+        if (!isSwordsOfSpartaActive && swordsOfSpartaInputAction.triggered)
+        {
+            ActivateSwordsOfSparta();
+        }
+    }
+
+    
+    private void ActivateSwordsOfSparta()
+    {
+        isSwordsOfSpartaActive = true;
+        swordsOfSpartaObject.SetActive(true);
+
+        // Play the Swords of Sparta activation sound
+        if (swordsOfSpartaActivationSound != null)
+            swordsOfSpartaActivationSound.Play();
+
+        // Disable the Swords of Sparta object after the specified duration
+        StartCoroutine(DeactivateSwordsOfSparta());
+    }
+
+    
+    private IEnumerator DeactivateSwordsOfSparta()
+    {
+        yield return new WaitForSeconds(swordsOfSpartaDuration);
+
+        // Deactivate the Swords of Sparta object and reset the flag
+        swordsOfSpartaObject.SetActive(false);
+        isSwordsOfSpartaActive = false;
+    }
 
     float TargetDistance(EnemyScript target)
     {

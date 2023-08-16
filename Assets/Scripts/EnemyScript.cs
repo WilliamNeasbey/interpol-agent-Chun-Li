@@ -37,8 +37,9 @@ public class EnemyScript : MonoBehaviour
     //Events
     public UnityEvent<EnemyScript> OnDamage;
     public UnityEvent<EnemyScript> OnStopMoving;
-    public UnityEvent<EnemyScript> OnRetreat; 
-    
+    public UnityEvent<EnemyScript> OnRetreat;
+
+    private CombatScript combatScriptReference; // Reference to the CombatScript component
 
     void Start()
     {
@@ -58,9 +59,12 @@ public class EnemyScript : MonoBehaviour
 
         counterParticle.Clear();
         counterParticle.Stop();
-
+        AssignCombatScriptReference(playerCombat);
     }
-
+    public void AssignCombatScriptReference(CombatScript combatScript)
+    {
+        combatScriptReference = combatScript;
+    }
     IEnumerator EnemyMovement()
     {
         //Waits until the enemy is not assigned to no action like attacking or retreating
@@ -91,6 +95,7 @@ public class EnemyScript : MonoBehaviour
 
         //Only moves if the direction is set
         MoveEnemy(moveDirection);
+
     }
 
     //Listened event from Player Animation
@@ -134,6 +139,23 @@ public class EnemyScript : MonoBehaviour
         isStunned = true;
         yield return new WaitForSeconds(.5f);
         isStunned = false;
+        
+        if (combatScriptReference != null)
+        {
+            combatScriptReference.hitCounterLightningKicks++; // Increment the lightning kicks hit count
+            combatScriptReference.hitCount++; // Increment the normal hit count
+
+            int hitCount = combatScriptReference.hitCount;
+            int hitCounterLightningKicks = combatScriptReference.hitCounterLightningKicks;
+
+            // Do something with the hit counts
+            Debug.Log("Normal Hit Count: " + hitCount);
+            Debug.Log("Lightning Kicks Hit Count: " + hitCounterLightningKicks);
+        }
+        else
+        {
+            Debug.LogWarning("CombatScript reference is not assigned.");
+        }
     }
 
     void OnPlayerCounter(EnemyScript target)
@@ -163,6 +185,7 @@ public class EnemyScript : MonoBehaviour
         characterController.enabled = false;
         animator.SetTrigger("Death");
         enemyManager.SetEnemyAvailiability(this, false);
+        DisableHitbox();
     }
 
     public void SetRetreat()
