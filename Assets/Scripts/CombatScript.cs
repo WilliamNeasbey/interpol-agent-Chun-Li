@@ -196,7 +196,7 @@ public class CombatScript : MonoBehaviour
     }
 
     //This function gets called whenever the player inputs the kick action
-    void AttackCheck()
+    public void AttackCheck()
     {
         if (isAttackingEnemy)
             return;

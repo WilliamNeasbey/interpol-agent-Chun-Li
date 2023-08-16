@@ -9189,6 +9189,22 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 10.0833025
       objectReference: {fileID: 0}
+    - target: {fileID: 7696024937134918022, guid: dccd5e91221ac7840aa8cd2a918b7669, type: 3}
+      propertyPath: m_Orbits.Array.data[0].m_Height
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7696024937134918022, guid: dccd5e91221ac7840aa8cd2a918b7669, type: 3}
+      propertyPath: m_Orbits.Array.data[1].m_Height
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7696024937134918022, guid: dccd5e91221ac7840aa8cd2a918b7669, type: 3}
+      propertyPath: m_Orbits.Array.data[1].m_Radius
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7696024937134918022, guid: dccd5e91221ac7840aa8cd2a918b7669, type: 3}
+      propertyPath: m_Orbits.Array.data[2].m_Height
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7696024937298887736, guid: dccd5e91221ac7840aa8cd2a918b7669, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -16453,6 +16469,10 @@ MonoBehaviour:
   painSound: {fileID: 920189632}
   SpinningbirdkickSound: {fileID: 1029517346}
   LightningkickSound: {fileID: 803377173}
+  kamehamehaSound: {fileID: 0}
+  sephirothSound: {fileID: 0}
+  swordsOfSpartaObject: {fileID: 0}
+  swordsOfSpartaActivationSound: {fileID: 0}
   attackCooldown: 0.7
   isAttackingEnemy: 0
   isCountering: 0
@@ -16460,6 +16480,8 @@ MonoBehaviour:
   kickParticle: {fileID: 1354300346}
   lastHitCamera: {fileID: 379132757}
   lastHitFocusObject: {fileID: 1231583397}
+  kamehamehaPrefab: {fileID: 0}
+  sephirothPrefab: {fileID: 0}
   OnTrajectory:
     m_PersistentCalls:
       m_Calls: []
@@ -17732,6 +17754,22 @@ PrefabInstance:
     - target: {fileID: 4268634826100169348, guid: 89d4cf1e359135a44936fc9ca6ce2c20, type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4268634826162844603, guid: 89d4cf1e359135a44936fc9ca6ce2c20, type: 3}
+      propertyPath: m_Orbits.Array.data[0].m_Height
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4268634826162844603, guid: 89d4cf1e359135a44936fc9ca6ce2c20, type: 3}
+      propertyPath: m_Orbits.Array.data[1].m_Height
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4268634826162844603, guid: 89d4cf1e359135a44936fc9ca6ce2c20, type: 3}
+      propertyPath: m_Orbits.Array.data[1].m_Radius
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4268634826162844603, guid: 89d4cf1e359135a44936fc9ca6ce2c20, type: 3}
+      propertyPath: m_Orbits.Array.data[2].m_Height
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4268634826162844606, guid: 89d4cf1e359135a44936fc9ca6ce2c20, type: 3}
       propertyPath: m_LocalPosition.x
@@ -20013,6 +20051,22 @@ PrefabInstance:
     - target: {fileID: 2827926301082524702, guid: 24e8211e2efb49f4f9d1cd39cfb0e458, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0.39104396
+      objectReference: {fileID: 0}
+    - target: {fileID: 4349798373429456296, guid: 24e8211e2efb49f4f9d1cd39cfb0e458, type: 3}
+      propertyPath: m_Orbits.Array.data[0].m_Height
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4349798373429456296, guid: 24e8211e2efb49f4f9d1cd39cfb0e458, type: 3}
+      propertyPath: m_Orbits.Array.data[1].m_Height
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4349798373429456296, guid: 24e8211e2efb49f4f9d1cd39cfb0e458, type: 3}
+      propertyPath: m_Orbits.Array.data[1].m_Radius
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4349798373429456296, guid: 24e8211e2efb49f4f9d1cd39cfb0e458, type: 3}
+      propertyPath: m_Orbits.Array.data[2].m_Height
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4649678042680050201, guid: 24e8211e2efb49f4f9d1cd39cfb0e458, type: 3}
       propertyPath: m_RootOrder
@@ -25366,6 +25420,22 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0.0008072646
       objectReference: {fileID: 0}
+    - target: {fileID: 8309080524158059838, guid: 8af065e698c97ea4cb1c3bca56848081, type: 3}
+      propertyPath: m_Orbits.Array.data[0].m_Height
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8309080524158059838, guid: 8af065e698c97ea4cb1c3bca56848081, type: 3}
+      propertyPath: m_Orbits.Array.data[1].m_Height
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8309080524158059838, guid: 8af065e698c97ea4cb1c3bca56848081, type: 3}
+      propertyPath: m_Orbits.Array.data[1].m_Radius
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8309080524158059838, guid: 8af065e698c97ea4cb1c3bca56848081, type: 3}
+      propertyPath: m_Orbits.Array.data[2].m_Height
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8309080524200646325, guid: 8af065e698c97ea4cb1c3bca56848081, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.0000038136595
@@ -27588,11 +27658,11 @@ MonoBehaviour:
   m_BindingMode: 4
   m_SplineCurvature: 0.2
   m_Orbits:
-  - m_Height: 7
+  - m_Height: 5
     m_Radius: 9
-  - m_Height: 5.4
-    m_Radius: 11
-  - m_Height: 1.4
+  - m_Height: 4
+    m_Radius: 9
+  - m_Height: 3
     m_Radius: 9
   m_LegacyHeadingBias: 3.4028235e+38
   m_Rigs:
