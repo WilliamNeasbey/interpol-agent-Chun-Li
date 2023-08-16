@@ -22,6 +22,16 @@ public class AiCombatController : MonoBehaviour
             // Continuously attack using left-click
             Attack();
         }
+        if (playerCombat.hitCounterLightningKicks >= 45)
+        {
+            // Perform Spinning Bird Kick
+            LightningKicks();
+        }
+        else
+        {
+            // Continuously attack using left-click
+            Attack();
+        }
     }
 
     private void Attack()
@@ -34,5 +44,11 @@ public class AiCombatController : MonoBehaviour
     {
         // Call the player's Spinning Bird Kick function
         playerCombat.SpinningBirdKick();
+    }
+
+    private void LightningKicks()
+    {
+        // Call the player's Spinning Bird Kick function
+        playerCombat.LightningKicks();
     }
 }

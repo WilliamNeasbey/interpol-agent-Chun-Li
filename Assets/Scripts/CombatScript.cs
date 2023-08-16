@@ -228,7 +228,7 @@ public class CombatScript : MonoBehaviour
     }
 
     // Function to update the UI to display the number of hits until the new attack is available
-    void UpdateHitCountUI()
+    public void UpdateHitCountUI()
     {
         if (hitCountText != null)
             hitCountText.text =  Mathf.Max(20 - hitCount, 0).ToString(); // Update normal hits UI
