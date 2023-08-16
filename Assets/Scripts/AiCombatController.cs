@@ -3,6 +3,8 @@ using UnityEngine;
 public class AiCombatController : MonoBehaviour
 {
     private CombatScript playerCombat;
+    private int regularAttackCount = 0;
+    private int lightningKicksCount = 0;
 
     private void Start()
     {
@@ -17,14 +19,9 @@ public class AiCombatController : MonoBehaviour
             // Perform Spinning Bird Kick
             SpinningBirdKick();
         }
-        else
+        else if (playerCombat.hitCounterLightningKicks >= 45)
         {
-            // Continuously attack using left-click
-            Attack();
-        }
-        if (playerCombat.hitCounterLightningKicks >= 45)
-        {
-            // Perform Spinning Bird Kick
+            // Perform Lightning Kicks
             LightningKicks();
         }
         else
@@ -38,6 +35,29 @@ public class AiCombatController : MonoBehaviour
     {
         // Call the player's attack function
         playerCombat.AttackCheck();
+
+        // Increment the regular attack count
+        regularAttackCount++;
+
+        // Check if it's time to trigger Kamehameha after 15 regular attacks
+        if (regularAttackCount >= 15)
+        {
+            // Perform Kamehameha
+            Kamehameha();
+
+            // Reset the regular attack count
+            regularAttackCount = 0;
+        }
+
+        // Check if it's time to trigger Sephiroth after 25 regular attacks
+        if (regularAttackCount >= 25)
+        {
+            // Perform Sephiroth
+            Sephiroth();
+
+            // Reset the regular attack count
+            regularAttackCount = 0;
+        }
     }
 
     private void SpinningBirdKick()
@@ -48,7 +68,19 @@ public class AiCombatController : MonoBehaviour
 
     private void LightningKicks()
     {
-        // Call the player's Spinning Bird Kick function
+        // Call the player's Lightning Kicks function
         playerCombat.LightningKicks();
+    }
+
+    private void Kamehameha()
+    {
+        // Call the player's Kamehameha function
+        playerCombat.Kamehameha();
+    }
+
+    private void Sephiroth()
+    {
+        // Call the player's Sephiroth function
+        playerCombat.Sephiroth();
     }
 }
