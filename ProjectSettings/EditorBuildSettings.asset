@@ -41,4 +41,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/IllegalsOnMyYard.unity
     guid: df55368bbd987e14699153cb38d91911
+  - enabled: 1
+    path: Assets/Scenes/CutsceneIllegals.unity
+    guid: 4fad88578fb17c249a5a9bc9f6b7f648
+  - enabled: 1
+    path: Assets/Scenes/VirtualInsanity.unity
+    guid: 15251ab7f7ab9624bb5c458df8989ce5
+  - enabled: 1
+    path: Assets/Scenes/Credits.unity
+    guid: 33ebb502319c6db4a86349a22ec8d906
   m_configObjects: {}
