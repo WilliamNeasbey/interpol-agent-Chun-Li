@@ -23,7 +23,7 @@ public class CameraZoomController : MonoBehaviour
         if (!hasFinishedZoom)
         {
             // Check if it's time to start the zoom
-            if (!hasStartedZoom && Time.time >= 5.0f)
+            if (!hasStartedZoom && Time.time >= 3.0f)
             {
                 hasStartedZoom = true;
                 zoomStartTime = Time.time;
