@@ -4,10 +4,14 @@ using UnityEngine.SceneManagement;
 public class WinConditionDefeatAllEnemies : MonoBehaviour
 {
     public GameObject winScreen;
+    public GameObject playerObject; 
+    public AudioSource musicAudioSource; 
     public float delayBeforeLoading = 3f;
-    public string nextSceneName; // Public variable to set the next scene name in the Inspector
+    public string nextSceneName;
 
     private EnemyManager enemyManager;
+    private bool isPlayerDisabled = false;
+    private bool isMusicDisabled = false;
 
     private void Start()
     {
@@ -27,9 +31,11 @@ public class WinConditionDefeatAllEnemies : MonoBehaviour
             // Enable the win screen (assuming it's initially disabled in the Inspector)
             if (winScreen != null)
                 winScreen.SetActive(true);
+            playerObject.SetActive(false);
+            musicAudioSource.mute = true;
 
             // Load the next scene after the specified delay
-            Invoke("LoadNextScene", delayBeforeLoading);
+            //Invoke("LoadNextScene", delayBeforeLoading);
         }
     }
 
